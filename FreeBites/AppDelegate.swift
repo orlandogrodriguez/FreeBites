@@ -14,16 +14,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    override init() {
+        super.init()
         FIRApp.configure()
-        FIRAuth.auth()?.signIn(withEmail: "orly@test.com", password: "123456", completion: { (user, err) in
+    }
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        if FIRAuth.auth()?.currentUser == nil {
+            
+        }
+        
+        /*FIRAuth.auth()?.signIn(withEmail: "orly@test.com", password: "123456", completion: { (user, err) in
             if let error = err {
                 print(error.localizedDescription)
             } else {
                 print(user?.email)
             }
-        })
+        })*/
+        
         return true
     }
 

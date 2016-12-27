@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseDatabase
 import FirebaseAuth
+import Firebase
 
 class ViewController: UIViewController {
 
@@ -36,12 +37,24 @@ class ViewController: UIViewController {
     //MARK: - Helper Functions
     
     func checkForCurrentUser() -> () {
+        
         var message = ""
+        var curUserName = ""
+        
         _ = FIRAuth.auth()?.addStateDidChangeListener() { (auth, user) in
             if FIRAuth.auth()?.currentUser != nil {
-                message = "Welcome to the main menu, \(user!.email)!"
+                let curUserUID = FIRAuth.auth()?.currentUser?.uid
+                FIRDatabase.database().reference().child("users").child(curUserUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                    print (snapshot)
+                    
+                    let value = snapshot.value as? NSDictionary
+                    curUserName = value?.value(forKey: "name") as? String ?? ""
+                    message = "Current User: \(curUserName)"
+                    self.updateWelcomeMessage(message)
+                    
+                })
             } else {
-                message = "Welcome to the main menu, guest!"
+                //message = "Current User: Guest"
             }
             self.updateWelcomeMessage(message)
             print (message)
