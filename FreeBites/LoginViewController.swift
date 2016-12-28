@@ -12,6 +12,8 @@ import FirebaseDatabase
 
 class LoginViewController: UIViewController {
     
+    
+    
     // MARK: - Database
     
     var ref = FIRDatabase.database().reference()
@@ -74,6 +76,7 @@ class LoginViewController: UIViewController {
     // MARK: - Application //////////////////////////////////////////////////////////
     
     override func viewDidLoad() {
+        print("checking if github is now tracking my contributions")
         super.viewDidLoad()
         setDefaultLoginPageParameters()
         drawUIElements()
