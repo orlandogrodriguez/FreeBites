@@ -24,11 +24,17 @@ class LoginViewController: UIViewController {
     
     @IBAction func eaterMode(_ sender: AnyObject) {
         setMode(0)
+        
+        eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
+        providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
     }
    
     @IBAction func providerMode(_ sender: AnyObject) {
         setMode(1)
         signInSignUpToggleHelper()
+        
+        providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
+        eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
     }
     
     @IBAction func proceedAction(_ sender: Any) {
@@ -59,6 +65,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     
+    @IBOutlet weak var eaterModeOutlet: UIButton!
+    @IBOutlet weak var providerModeOutlet: UIButton!
     @IBOutlet weak var proceedOutlet: UIButton!
     
     @IBOutlet weak var signInSignUpToggleOutlet: UISegmentedControl!
@@ -68,12 +76,16 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setDefaultLoginPageParameters()
+        drawUIElements()
 
     }
     
     override func viewDidAppear(_ animated:Bool) {
         super.viewDidAppear(animated)
         try! FIRAuth.auth()?.signOut()
+        
+        // TODO: - Implement the below code as part of the main menu.
+        
         FIRAuth.auth()?.addStateDidChangeListener({ (auth:FIRAuth, user:FIRUser?) in
             if let user = user {
                 print ("Welcome \(user.email!)!")
@@ -90,6 +102,7 @@ class LoginViewController: UIViewController {
     
     // MARK: - Helper Functions
     
+    //Eater/Provider Toggle
     func setMode(_ mode:Int) -> () {
         _ = mode == 1 ? enableAllFields() : disableAllFields()
         nameField.alpha = CGFloat(mode)
@@ -146,7 +159,6 @@ class LoginViewController: UIViewController {
             if checkValidCredentials(0) {
                 signInHelper()
             }
-            
         //Creating a new user
         case 1:
             if checkValidCredentials(1) {
@@ -170,7 +182,6 @@ class LoginViewController: UIViewController {
     }
     
     func signUpHelper() -> () {
-        var newUserUID:String = ""
         var newUserEmail:String = ""
         var newUserName:String = ""
         
@@ -179,7 +190,6 @@ class LoginViewController: UIViewController {
                 print (error.localizedDescription)
                 self.alertHelper(customTitle: "Whoops...", customMessage: error.localizedDescription)
             } else {
-                newUserUID = user!.uid
                 newUserEmail = user!.email!
                 if self.nameIsValid() {
                     newUserName = self.nameField.text!
@@ -187,14 +197,10 @@ class LoginViewController: UIViewController {
                 self.ref.child("users").child(user!.uid).setValue([
                     "email" : newUserEmail,
                     "name"  : newUserName])
+                user!.sendEmailVerification()
                 self.performSegue(withIdentifier: "proceedSegue", sender: self)
             }
-            
-            
         })
-        
-        // ref.child("users").
-        
     }
     
     func checkValidCredentials(_ mode:Int) -> Bool {
@@ -262,6 +268,37 @@ class LoginViewController: UIViewController {
         let alert = UIAlertController(title: customTitle, message: customMessage, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    
+    // TODO: - Implement this in a separate UI elements class.
+    func drawUIElements() -> () {
+        //Draw lines at the bottom of the text fields
+        let border1 = CALayer()
+        let border2 = CALayer()
+        let border3 = CALayer()
+        
+        let width = CGFloat(2.0)
+        
+        border1.borderColor = UIColor.white.cgColor
+        border1.frame = CGRect(x: 0, y: nameField.frame.size.height - width, width:  nameField.frame.size.width, height: nameField.frame.size.height)
+        border1.borderWidth = width
+        
+        border2.borderColor = UIColor.white.cgColor
+        border2.frame = CGRect(x: 0, y: emailField.frame.size.height - width, width:  emailField.frame.size.width, height: emailField.frame.size.height)
+        border2.borderWidth = width
+        
+        border3.borderColor = UIColor.white.cgColor
+        border3.frame = CGRect(x: 0, y: passwordField.frame.size.height - width, width:  passwordField.frame.size.width, height: passwordField.frame.size.height)
+        border3.borderWidth = width
+        
+        nameField.layer.addSublayer(border1)
+        emailField.layer.addSublayer(border2)
+        passwordField.layer.addSublayer(border3)
+        
+        nameField.layer.masksToBounds = true
+        emailField.layer.masksToBounds = true
+        passwordField.layer.masksToBounds = true
     }
     
     

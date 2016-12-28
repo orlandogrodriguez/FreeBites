@@ -31,6 +31,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         checkForCurrentUser()
+        checkEmailVerification()
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -71,6 +72,16 @@ class ViewController: UIViewController {
     
     func updateWelcomeMessage(_ msg:String) -> () {
         welcomeLabel.text = msg
+    }
+    
+    func checkEmailVerification() -> () {
+        if let user = FIRAuth.auth()?.currentUser {
+            if !user.isEmailVerified {
+                print("Please verify email address")
+            } else {
+                print("Email has been verified! You're good to go!")
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {
