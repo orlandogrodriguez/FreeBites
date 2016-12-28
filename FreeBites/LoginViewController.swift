@@ -76,7 +76,6 @@ class LoginViewController: UIViewController {
     // MARK: - Application //////////////////////////////////////////////////////////
     
     override func viewDidLoad() {
-        print("checking if github is now tracking my contributions")
         super.viewDidLoad()
         setDefaultLoginPageParameters()
         drawUIElements()
