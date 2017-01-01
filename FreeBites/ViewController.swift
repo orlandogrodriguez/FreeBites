@@ -10,12 +10,17 @@ import UIKit
 import FirebaseDatabase
 import FirebaseAuth
 import Firebase
+import MapKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, CLLocationManagerDelegate {
 
+    //MARK: - Properties
+    var locationManager: CLLocationManager!
+    
     //MARK: - Outlets
     
     @IBOutlet weak var welcomeLabel: UILabel!
+    @IBOutlet weak var map: MKMapView!
     
     //MARK: - Actions
     
@@ -33,6 +38,15 @@ class ViewController: UIViewController {
         checkForCurrentUser()
         checkEmailVerification()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    private func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        let location = locations.last as! CLLocation
+        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
+        
+        self.map.setRegion(region, animated: true)
     }
     
     //MARK: - Helper Functions
