@@ -9,10 +9,11 @@
 import UIKit
 import FirebaseAuth
 import FirebaseDatabase
+import CoreLocation
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, CLLocationManagerDelegate {
     
-    
+    var locationManager: CLLocationManager!
     
     // MARK: - Database
     
@@ -79,6 +80,10 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         setDefaultLoginPageParameters()
         drawUIElements()
+        
+        locationManager = CLLocationManager()
+        locationManager?.requestWhenInUseAuthorization()
+
 
     }
     

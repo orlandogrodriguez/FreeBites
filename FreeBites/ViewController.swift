@@ -11,11 +11,22 @@ import FirebaseDatabase
 import FirebaseAuth
 import Firebase
 import MapKit
+import QuartzCore
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController {
 
-    //MARK: - Properties
-    var locationManager: CLLocationManager!
+    //location manager
+    lazy var locationManager: CLLocationManager = {
+        var _locationManager = CLLocationManager()
+        _locationManager.delegate = self
+        _locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+        _locationManager.activityType = .automotiveNavigation
+        _locationManager.distanceFilter = 10.0  // Movement threshold for new events
+        //  _locationManager.allowsBackgroundLocationUpdates = true // allow in background
+        
+        return _locationManager
+    }()
+
     
     //MARK: - Outlets
     
@@ -29,6 +40,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         performSegue(withIdentifier: "logoutSegue", sender: self)
     }
 
+    func quickHelper() {
+        print("Location: \(locationManager.location!)")
+    }
     
     //MARK: - Application
     
@@ -37,17 +51,21 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         checkForCurrentUser()
         checkEmailVerification()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        _ = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(handleMapRegion), userInfo: nil, repeats: false)
+        
+        map.layer.cornerRadius = 12
+        map.clipsToBounds = true
+
     }
     
-    private func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        let location = locations.last as! CLLocation
-        
-        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001))
-        
-        self.map.setRegion(region, animated: true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //allow location use
+        locationManager.requestAlwaysAuthorization()
+        locationManager.startUpdatingLocation()
     }
+    
     
     //MARK: - Helper Functions
     
@@ -97,6 +115,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
+    
+    func handleMapRegion() -> () {
+
+        let userLocation = map.userLocation
+        let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 1000, 1000)
+        map.setRegion(region, animated: true)
+        map.showsUserLocation = true
+
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -105,4 +132,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
 
 
 }
+
+// MARK: - CLLocationManagerDelegate
+extension ViewController: CLLocationManagerDelegate {
+    
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        
+        for location in locations {
+            
+            print("**********************")
+            print("Long \(location.coordinate.longitude)")
+            print("Lati \(location.coordinate.latitude)")
+            print("Alt \(location.altitude)")
+            print("Sped \(location.speed)")
+            print("Accu \(location.horizontalAccuracy)")
+            
+            print("**********************")
+            
+            
+        }
+    }
+    
+}
+
 

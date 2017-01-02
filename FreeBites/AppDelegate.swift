@@ -8,11 +8,14 @@
 
 import UIKit
 import Firebase
+import CoreLocation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var locationManager: CLLocationManager!
+
 
     override init() {
         super.init()
@@ -32,6 +35,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 print(user?.email)
             }
         })*/
+        
+        locationManager = CLLocationManager()
+        locationManager?.requestWhenInUseAuthorization()
         
         return true
     }
