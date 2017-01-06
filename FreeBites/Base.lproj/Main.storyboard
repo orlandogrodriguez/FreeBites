@@ -54,7 +54,7 @@
                                 </items>
                                 <color key="barTintColor" red="0.93333333333333335" green="0.69803921568627447" blue="0.066666666666666666" alpha="1" colorSpace="calibratedRGB"/>
                             </tabBar>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZg-ee-VB4">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZg-ee-VB4">
                                 <rect key="frame" x="20" y="84" width="335" height="335"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="MZg-ee-VB4" secondAttribute="height" multiplier="1:1" id="JQW-cD-VsR"/>

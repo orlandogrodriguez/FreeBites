@@ -15,6 +15,8 @@ import QuartzCore
 
 class ViewController: UIViewController {
 
+    //Properties
+    
     //location manager
     lazy var locationManager: CLLocationManager = {
         var _locationManager = CLLocationManager()
@@ -52,7 +54,7 @@ class ViewController: UIViewController {
         checkForCurrentUser()
         checkEmailVerification()
         
-        _ = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(handleMapRegion), userInfo: nil, repeats: false)
+        _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
         
         map.layer.cornerRadius = 12
         map.clipsToBounds = true
@@ -116,13 +118,13 @@ class ViewController: UIViewController {
         }
     }
     
-    func handleMapRegion() -> () {
-
-        let userLocation = map.userLocation
-        let region = MKCoordinateRegionMakeWithDistance(userLocation.location!.coordinate, 1000, 1000)
-        map.setRegion(region, animated: true)
+    func handleMapRegion() {
+        var lat = 33.7756
+        var lon = -84.3963
+        var coord = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+        let region = MKCoordinateRegionMakeWithDistance(coord, 2500, 2500)
+        map.setRegion(region, animated: false)
         map.showsUserLocation = true
-
     }
 
     override func didReceiveMemoryWarning() {
