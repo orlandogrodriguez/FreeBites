@@ -27,17 +27,24 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func eaterMode(_ sender: AnyObject) {
         setMode(0)
+    
+        //eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
+        //eaterModeOutlet.layer.cornerRadius = eaterModeOutlet.frame.height / 2
+        //providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
         
-        eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
-        providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
+        //Update UI
+        updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
     }
    
     @IBAction func providerMode(_ sender: AnyObject) {
         setMode(1)
         signInSignUpToggleHelper()
         
-        providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
-        eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
+        //providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
+        //eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
+        
+        //Update UI
+        updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
     }
     
     @IBAction func proceedAction(_ sender: Any) {
@@ -63,6 +70,7 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     // MARK: - Outlets
+    @IBOutlet weak var eaterProviderSelector: UIImageView!
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var nameField: UITextField!
@@ -107,9 +115,16 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    // MARK: - Helper Functions
+///////////////////////////////////////////////////////////////////
+////// MARK: - Helper Functions ///////////////////////////////////
+///////////////////////////////////////////////////////////////////
     
-    //Eater/Provider Toggle
+    /*
+    // MARK: - Eater/Provider Toggle Helpers
+    // These functions take care of the behavior and appearance of
+    // the view controller when toggling between eater and provider
+    // mode
+    */
     func setMode(_ mode:Int) -> () {
         _ = mode == 1 ? enableAllFields() : disableAllFields()
         nameField.alpha = CGFloat(mode)
@@ -119,46 +134,12 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         
         globalMode[0] = mode
     }
-    
     func setDefaultLoginPageParameters() -> () {
         setMode(0)
     }
-    
-    func disableAllFields() -> () {
-        nameField.isEnabled = false
-        emailField.isEnabled = false
-        passwordField.isEnabled = false
-        signInSignUpToggleOutlet.isEnabled = false
-    }
-    
-    func enableAllFields() -> () {
-        nameField.isEnabled = true
-        emailField.isEnabled = true
-        passwordField.isEnabled = true
-        signInSignUpToggleOutlet.isEnabled = true
-    }
-    
-    func signInSignUpToggleHelper() -> () {
-        switch signInSignUpToggleOutlet.selectedSegmentIndex {
-        case 0:
-            print("Sign In Mode");
-            nameField.isEnabled = false
-            nameField.alpha = 0
-            globalMode[1] = 0
-        case 1:
-            print("Sign Up Mode");
-            nameField.isEnabled = true
-            nameField.alpha = 1
-            globalMode[1] = 1
-        default:
-            break;
-        }
-    }
-    
     func proceedAsEater() -> () {
             performSegue(withIdentifier: "proceedSegue", sender: self)
     }
-    
     func proceedAsProvider(_ mode:Int) -> () {
         switch mode {
         //Signing in existing user
@@ -176,6 +157,28 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    /*
+    // MARK: - SignIn / SignUp Helpers
+    // These functions take care of all the Firebase authentication
+    // functionality for signing in and signing up. They also
+    // manage the creation of new users in the database.
+    */
+    func signInSignUpToggleHelper() -> () {
+        switch signInSignUpToggleOutlet.selectedSegmentIndex {
+        case 0:
+            print("Sign In Mode");
+            nameField.isEnabled = false
+            nameField.alpha = 0
+            globalMode[1] = 0
+        case 1:
+            print("Sign Up Mode");
+            nameField.isEnabled = true
+            nameField.alpha = 1
+            globalMode[1] = 1
+        default:
+            break;
+        }
+    }
     func signInHelper() -> () {
         FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (user, error) in
             if let error = error {
@@ -187,7 +190,6 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
             }
         })
     }
-    
     func signUpHelper() -> () {
         var newUserEmail:String = ""
         var newUserName:String = ""
@@ -210,6 +212,7 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         })
     }
     
+    // MARK: - Credentials Validation
     func checkValidCredentials(_ mode:Int) -> Bool {
         switch mode {
         case 0:
@@ -231,7 +234,6 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         }
         return false
     }
-    
     func emailIsValid() -> Bool {
         //For now just check for empty string.
         //TODO: - Implement validity check for email
@@ -244,7 +246,6 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
             return false
         }
     }
-    
     func passwordIsValid() -> Bool {
         //For now just check for empty string.
         //TODO: - Implement validity check for password
@@ -257,7 +258,6 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
             return false
         }
     }
-    
     func nameIsValid() -> Bool {
         //For now just check for empty string.
         //TODO: - Implement validity check for name
@@ -270,17 +270,29 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
             return false
         }
     }
-    
     func alertHelper(customTitle:String, customMessage:String) {
         let alert = UIAlertController(title: customTitle, message: customMessage, preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
     
-    
     // TODO: - Implement this in a separate UI elements class.
-    func drawUIElements() -> () {
+    
+    // MARK: - UI Helpers
+    func drawUIElements() {
         //Draw lines at the bottom of the text fields
+        drawLinesUnderTextFields()
+        
+        //Draw Eater/Provider Selector rounded rectangle
+        //First set up the rounded rect for the first time and add corner radius.
+        updateEaterProviderSelectorPosition(newX: eaterModeOutlet.frame.minX, newY: eaterModeOutlet.frame.minY)
+        eaterProviderSelector.layer.cornerRadius = eaterProviderSelector.frame.height * 0.5
+        //SignInSignUpToggle
+        signInSignUpToggleOutlet.layer.cornerRadius = signInSignUpToggleOutlet.frame.height * 0.5
+        signInSignUpToggleOutlet.isEnabled = false
+        proceedOutlet.layer.cornerRadius = proceedOutlet.frame.height * 0.5
+    }
+    func drawLinesUnderTextFields() {
         let border1 = CALayer()
         let border2 = CALayer()
         let border3 = CALayer()
@@ -306,6 +318,21 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         nameField.layer.masksToBounds = true
         emailField.layer.masksToBounds = true
         passwordField.layer.masksToBounds = true
+    }
+    func updateEaterProviderSelectorPosition(newX: CGFloat, newY: CGFloat) {
+        eaterProviderSelector.layer.frame = CGRect(x: newX, y: newY, width: eaterModeOutlet.frame.width, height: eaterModeOutlet.frame.height)
+    }
+    func disableAllFields() {
+        nameField.isEnabled = false
+        emailField.isEnabled = false
+        passwordField.isEnabled = false
+        signInSignUpToggleOutlet.isEnabled = false
+    }
+    func enableAllFields() {
+        nameField.isEnabled = true
+        emailField.isEnabled = true
+        passwordField.isEnabled = true
+        signInSignUpToggleOutlet.isEnabled = true
     }
     
     

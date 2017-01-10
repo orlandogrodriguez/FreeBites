@@ -34,7 +34,9 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var welcomeLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var mapViewInformationSpace: UIImageView!
     
+    @IBOutlet weak var foodProfilePicture: UIImageView!
     //MARK: - Actions
     
     @IBAction func logOut(_ sender: Any) {
@@ -56,8 +58,15 @@ class ViewController: UIViewController {
         
         _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
         
-        map.layer.cornerRadius = 12
+        //Handle Corner Radii
+        map.layer.cornerRadius = 15
         map.clipsToBounds = true
+        welcomeLabel.layer.cornerRadius = 15
+        welcomeLabel.clipsToBounds = true
+        mapViewInformationSpace.clipsToBounds = true
+        mapViewInformationSpace.layer.cornerRadius = 15
+        foodProfilePicture.clipsToBounds = true
+        foodProfilePicture.layer.cornerRadius = 15
 
     }
     
@@ -90,8 +99,9 @@ class ViewController: UIViewController {
                 })
             } else {
                 //message = "Current User: Guest"
+                self.updateWelcomeMessage("Current User: Guest")
             }
-            self.updateWelcomeMessage(message)
+            //self.updateWelcomeMessage(message)
             print (message)
         }
     }
@@ -119,6 +129,9 @@ class ViewController: UIViewController {
     }
     
     func handleMapRegion() {
+        
+        //MARK: - TODO: Integrate latitude and longitude as class properties.
+        
         var lat = 33.7756
         var lon = -84.3963
         var coord = CLLocationCoordinate2D(latitude: lat, longitude: lon)
