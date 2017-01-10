@@ -164,12 +164,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rza-B9-NY0">
-                                        <rect key="frame" x="0.0" y="0.0" width="138" height="50"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="138" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     </imageView>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="90r-z0-Rce">
-                                        <rect key="frame" x="0.0" y="352" width="303" height="48"/>
+                                        <rect key="frame" x="0.0" y="352" width="303" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
@@ -181,7 +181,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOe-zG-EBc">
-                                        <rect key="frame" x="0.0" y="0.0" width="140" height="48"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="140" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Eater"/>
                                         <connections>
@@ -189,7 +189,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ytd-Hq-dwl">
-                                        <rect key="frame" x="163" y="0.0" width="140" height="48"/>
+                                        <rect key="frame" x="163" y="0.0" width="140" height="44"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <state key="normal" title="Provider"/>
                                         <connections>
@@ -270,7 +270,7 @@
         <scene sceneID="DM6-TW-OhH">
             <objects>
                 <viewController title="SettingsViewController" id="5DU-vI-w4S" customClass="SettingsViewController" customModule="FreeBites" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4HQ-8y-iKo">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="4HQ-8y-iKo">
                         <rect key="frame" x="0.0" y="0.0" width="250" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -281,20 +281,20 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Current User" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLn-r7-WTC">
-                                <rect key="frame" x="20" y="238" width="210" height="36"/>
+                                <rect key="frame" x="20" y="206" width="210" height="36"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="LhE-Ur-zBO" secondAttribute="trailing" constant="20" id="Pgh-pM-sSe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hLn-r7-WTC" secondAttribute="trailing" constant="4" id="bQY-zJ-FRC"/>
                             <constraint firstItem="LhE-Ur-zBO" firstAttribute="leading" secondItem="4HQ-8y-iKo" secondAttribute="leadingMargin" constant="20" id="g2t-Nv-GSr"/>
                             <constraint firstItem="LhE-Ur-zBO" firstAttribute="top" secondItem="4HQ-8y-iKo" secondAttribute="topMargin" constant="20" id="gMm-Nh-ZMc"/>
-                            <constraint firstItem="hLn-r7-WTC" firstAttribute="top" secondItem="4HQ-8y-iKo" secondAttribute="topMargin" constant="238" id="hq2-XN-LAq"/>
                             <constraint firstItem="hLn-r7-WTC" firstAttribute="leading" secondItem="4HQ-8y-iKo" secondAttribute="leadingMargin" constant="4" id="rGi-Dz-hcO"/>
+                            <constraint firstItem="hLn-r7-WTC" firstAttribute="top" secondItem="LhE-Ur-zBO" secondAttribute="bottom" constant="8" id="wFJ-My-rOp"/>
                         </constraints>
                     </view>
                 </viewController>

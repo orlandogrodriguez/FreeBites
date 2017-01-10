@@ -13,6 +13,39 @@ import CoreLocation
 
 class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
+    // MARK: - UI Element Position Variables
+    //Screen Variables
+    var screen = UIView()
+    var width:Int = 375
+    var height:Int = 687
+    var cWidth:Int = 375 / 2
+    var cHeight:Int = 687 / 2
+
+    
+    //Eater Button Variables
+    var eaterButton_xpos:Int = 0
+    var eaterButton_ypos:Int = 0
+    
+    //Provider Button Variables
+    var providerButton_xpos:Int = 0
+    var providerButton_ypos:Int = 0
+    
+    //SignInSignUpToggle Variables
+    var signInSignUpToggle_xpos:Int = 0
+    var signInSignUpToggle_ypos:Int = 0
+    
+    //Name Field Variables
+    var nameField_xpos:Int = 0
+    var nameField_ypos:Int = 0
+    
+    //Email Field Variables
+    var emailField_xpos:Int = 0
+    var emailField_ypos:Int = 0
+    
+    //Password Field Variables
+    var passwordField_xpos:Int = 0
+    var passwordField_ypos:Int = 0
+    
     var locationManager: CLLocationManager!
     
     // MARK: - Database
@@ -290,6 +323,10 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     // MARK: - UI Helpers
     func drawUIElements() {
         //Draw lines at the bottom of the text fields
+        var width = screen.frame.width
+        var height = screen.frame.height
+        var cWidth = width / 2
+        var cHeight = height / 2
         drawLinesUnderTextFields()
         
         //Draw Eater/Provider Selector rounded rectangle
@@ -329,7 +366,9 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         passwordField.layer.masksToBounds = true
     }
     func updateEaterProviderSelectorPosition(newX: CGFloat, newY: CGFloat) {
-        eaterProviderSelector.layer.frame = CGRect(x: newX, y: newY, width: eaterModeOutlet.frame.width, height: eaterModeOutlet.frame.height)
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            self.eaterProviderSelector.layer.frame = CGRect(x: newX, y: newY, width: self.eaterModeOutlet.frame.width, height: self.eaterModeOutlet.frame.height)
+        }, completion: nil)
     }
     func disableAllFields() {
         nameField.isEnabled = false
@@ -342,6 +381,21 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         emailField.isEnabled = true
         passwordField.isEnabled = true
         signInSignUpToggleOutlet.isEnabled = true
+    }
+    func handleUIPositions(phase: Int) {
+        
+        
+        switch phase {
+        case 0:
+            print("phase 1");//update positions
+            
+        case 2:
+            print("phase 2");//update positions
+        case 3:
+            print("phase 3");//update positions
+        default:
+            break;
+        }
     }
 
     /*

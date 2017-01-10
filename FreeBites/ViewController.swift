@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         let screenWidth = 375.0
         let screenHeight = 687.0
         settingsOutlet.isHidden = false
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.3) {
             self.settingsOutlet.frame = CGRect(x: screenWidth * 0.34, y: 0, width: screenWidth * (0.67), height: screenHeight)
             self.settingsOutlet.alpha = 1
             self.dismissSettingsOutlet.isEnabled = true
@@ -67,7 +67,7 @@ class ViewController: UIViewController {
         }
     }
     @IBAction func dismissSettings(_ sender: Any) {
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.3) {
             let screenWidth = 375.0
             let screenHeight = 687.0
             self.settingsOutlet.frame = CGRect(x: screenWidth, y: 0, width: screenWidth * (0.67), height: screenHeight)
@@ -101,9 +101,10 @@ class ViewController: UIViewController {
         
         //Handle Settings View
         let screenWidth = 375.0
-        let screenHeight = 647.0
+        let screenHeight = 687.0
+        settingsOutlet.layer.cornerRadius = 15
         settingsOutlet.isHidden = true
-        settingsOutlet.frame = CGRect(x: screenWidth, y: 20, width: screenWidth * (0.66), height: screenHeight - 20)
+        settingsOutlet.frame = CGRect(x: screenWidth, y: 0, width: screenWidth * (0.66), height: screenHeight - 20)
         dismissSettingsOutlet.alpha = 0
         dismissSettingsOutlet.isEnabled = false
         dismissSettingsOutlet.isHidden = true
