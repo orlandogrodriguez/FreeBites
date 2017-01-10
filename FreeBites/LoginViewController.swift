@@ -11,7 +11,7 @@ import FirebaseAuth
 import FirebaseDatabase
 import CoreLocation
 
-class LoginViewController: UIViewController, CLLocationManagerDelegate {
+class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDelegate {
     
     var locationManager: CLLocationManager!
     
@@ -88,10 +88,15 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         super.viewDidLoad()
         setDefaultLoginPageParameters()
         drawUIElements()
-        
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()
-
+        
+        nameField.delegate = self
+        
+        nameField.tag = 0
+        emailField.tag = 1
+        passwordField.tag = 2
+        
 
     }
     
@@ -113,6 +118,10 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
 ///////////////////////////////////////////////////////////////////
@@ -334,8 +343,6 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         passwordField.isEnabled = true
         signInSignUpToggleOutlet.isEnabled = true
     }
-    
-    
 
     /*
     // MARK: - Navigation
@@ -346,5 +353,33 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate {
         // Pass the selected object to the new view controller.
     }
     */
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool
+    {
+        // Try to find next responder
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            // Not found, so remove keyboard.
+            textField.resignFirstResponder()
+        }
+        // Do not add a line break
+        return false
+    }
 
 }
+
+/*
+ // MARK: - Keyboard stuff
+ */
+//extension UIViewController {
+//    func hideKeyboardWhenTappedAround() {
+//        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+//        view.addGestureRecognizer(tap)
+//    }
+//    
+//    func dismissKeyboard() {
+//        view.endEditing(true)
+//    }
+//}
+

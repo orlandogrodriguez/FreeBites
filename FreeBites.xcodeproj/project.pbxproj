@@ -261,6 +261,9 @@
 		8111E1F41E1091DD00473790 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					loginFields,
+				);
 				LastSwiftUpdateCheck = 0810;
 				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Orlando G. Rodriguez";

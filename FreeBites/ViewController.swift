@@ -15,6 +15,9 @@ import QuartzCore
 
 class ViewController: UIViewController {
 
+    //Database
+    var ref = FIRDatabase.database().reference()
+    
     //Properties
     
     //location manager
@@ -55,6 +58,7 @@ class ViewController: UIViewController {
         
         checkForCurrentUser()
         checkEmailVerification()
+        createRandomFood()
         
         _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
         
@@ -138,6 +142,32 @@ class ViewController: UIViewController {
         let region = MKCoordinateRegionMakeWithDistance(coord, 2500, 2500)
         map.setRegion(region, animated: false)
         map.showsUserLocation = true
+    }
+    
+    
+    //This is only a temporary function. Get rid of this later.
+    func createRandomFood() {
+        //33.7773° N, 84.3962° W
+        let klausLat = 33.7748
+        let klausLon = -84.3964
+        let foodName = "Pizza"
+        self.ref.child("food").child("000001").setValue([
+            "name"  : foodName,
+            "lat"   : klausLat,
+            "lon"   : klausLon])
+        let foodAnnotation = MKPointAnnotation()
+        
+        
+        var wantedFood = "000001"
+        FIRDatabase.database().reference().child("food").child(wantedFood).observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            let obtainedLat = value?.value(forKey: "lat") as? Double ?? 0.0
+            let obtainedLon = value?.value(forKey: "lon") as? Double ?? 0.0
+            foodAnnotation.coordinate = CLLocationCoordinate2D(latitude: obtainedLat, longitude: obtainedLon)
+            self.map.addAnnotation(foodAnnotation)
+        })
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
