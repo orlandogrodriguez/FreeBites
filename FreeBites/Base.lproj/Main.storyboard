@@ -51,6 +51,12 @@
                                                 </connections>
                                             </button>
                                         </barButtonItem>
+                                        <barButtonItem key="rightBarButtonItem" image="Settings Button" id="nZc-UX-lcb">
+                                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <connections>
+                                                <action selector="showSettings:" destination="BYZ-38-t0r" id="BzC-7i-UX8"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -89,6 +95,24 @@
                                 <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MgD-mw-gS6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30190496575342468" colorSpace="calibratedRGB"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <connections>
+                                    <action selector="dismissSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nL6-pC-MuU"/>
+                                </connections>
+                            </button>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vHu-VO-PCe">
+                                <rect key="frame" x="125" y="0.0" width="250" height="667"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <connections>
+                                    <segue destination="5DU-vI-w4S" kind="embed" identifier="settingsAppear" id="ixu-jW-EIf"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -102,9 +126,11 @@
                     </view>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <connections>
+                        <outlet property="dismissSettingsOutlet" destination="MgD-mw-gS6" id="YSp-Ub-SCh"/>
                         <outlet property="foodProfilePicture" destination="Ibk-jw-8yp" id="o7y-Gc-Pux"/>
                         <outlet property="map" destination="MZg-ee-VB4" id="c1H-ec-xnt"/>
                         <outlet property="mapViewInformationSpace" destination="M40-yY-CEB" id="BEt-eh-XTh"/>
+                        <outlet property="settingsOutlet" destination="vHu-VO-PCe" id="pDn-hI-J0d"/>
                         <outlet property="welcomeLabel" destination="D9g-aa-3KU" id="YUB-fX-7Tt"/>
                         <segue destination="maQ-IZ-1YL" kind="presentation" identifier="logoutSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="YwD-f3-TQ2"/>
                     </connections>
@@ -240,8 +266,46 @@
             </objects>
             <point key="canvasLocation" x="-999.20000000000005" y="114.69265367316342"/>
         </scene>
+        <!--SettingsViewController-->
+        <scene sceneID="DM6-TW-OhH">
+            <objects>
+                <viewController title="SettingsViewController" id="5DU-vI-w4S" customClass="SettingsViewController" customModule="FreeBites" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4HQ-8y-iKo">
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DefaultProfilePicture" translatesAutoresizingMaskIntoConstraints="NO" id="LhE-Ur-zBO">
+                                <rect key="frame" x="36" y="20" width="178" height="178"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="LhE-Ur-zBO" secondAttribute="height" multiplier="1:1" id="mYT-tG-6fR"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Current User" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hLn-r7-WTC">
+                                <rect key="frame" x="20" y="238" width="210" height="36"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.40000000600000002" green="0.80000001190000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="LhE-Ur-zBO" secondAttribute="trailing" constant="20" id="Pgh-pM-sSe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hLn-r7-WTC" secondAttribute="trailing" constant="4" id="bQY-zJ-FRC"/>
+                            <constraint firstItem="LhE-Ur-zBO" firstAttribute="leading" secondItem="4HQ-8y-iKo" secondAttribute="leadingMargin" constant="20" id="g2t-Nv-GSr"/>
+                            <constraint firstItem="LhE-Ur-zBO" firstAttribute="top" secondItem="4HQ-8y-iKo" secondAttribute="topMargin" constant="20" id="gMm-Nh-ZMc"/>
+                            <constraint firstItem="hLn-r7-WTC" firstAttribute="top" secondItem="4HQ-8y-iKo" secondAttribute="topMargin" constant="238" id="hq2-XN-LAq"/>
+                            <constraint firstItem="hLn-r7-WTC" firstAttribute="leading" secondItem="4HQ-8y-iKo" secondAttribute="leadingMargin" constant="4" id="rGi-Dz-hcO"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d3Q-Am-T10" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="689.60000000000002" y="114.69265367316342"/>
+        </scene>
     </scenes>
     <resources>
         <image name="Background_TechTower" width="375" height="667"/>
+        <image name="DefaultProfilePicture" width="210" height="210"/>
+        <image name="Settings Button" width="44" height="44"/>
     </resources>
 </document>

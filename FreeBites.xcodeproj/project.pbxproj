@@ -18,6 +18,7 @@
 		8111E2151E1091DE00473790 /* FreeBitesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8111E2141E1091DE00473790 /* FreeBitesTests.swift */; };
 		8111E2201E1091DE00473790 /* FreeBitesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8111E21F1E1091DE00473790 /* FreeBitesUITests.swift */; };
 		8111E22E1E10926300473790 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8111E22D1E10926300473790 /* GoogleService-Info.plist */; };
+		813E01A31E2575A000749EE8 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813E01A21E2575A000749EE8 /* SettingsViewController.swift */; };
 		81C201231E10AAC200900E86 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C201221E10AAC200900E86 /* User.swift */; };
 		AC76EC0B3A4B62DDF2612FF8 /* Pods_FreeBites.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2C4B758C3A1FD14959D4CA0E /* Pods_FreeBites.framework */; };
 /* End PBXBuildFile section */
@@ -59,6 +60,7 @@
 		8111E21F1E1091DE00473790 /* FreeBitesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeBitesUITests.swift; sourceTree = "<group>"; };
 		8111E2211E1091DE00473790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8111E22D1E10926300473790 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		813E01A21E2575A000749EE8 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		81C201221E10AAC200900E86 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B6743177262BFBBF2B70C9C5 /* Pods-FreeBitesUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FreeBitesUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FreeBitesUITests/Pods-FreeBitesUITests.release.xcconfig"; sourceTree = "<group>"; };
 		BC83394672C8C6987BA2BDF6 /* Pods-FreeBitesTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FreeBitesTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FreeBitesTests/Pods-FreeBitesTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			children = (
 				810662C31E10B50F00C0FFE4 /* LoginViewController.swift */,
 				8111E2011E1091DD00473790 /* ViewController.swift */,
+				813E01A21E2575A000749EE8 /* SettingsViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -481,6 +484,7 @@
 				810662C41E10B50F00C0FFE4 /* LoginViewController.swift in Sources */,
 				8111E2021E1091DD00473790 /* ViewController.swift in Sources */,
 				8111E2001E1091DD00473790 /* AppDelegate.swift in Sources */,
+				813E01A31E2575A000749EE8 /* SettingsViewController.swift in Sources */,
 				81C201231E10AAC200900E86 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

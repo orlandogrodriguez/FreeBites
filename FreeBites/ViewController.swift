@@ -19,6 +19,8 @@ class ViewController: UIViewController {
     var ref = FIRDatabase.database().reference()
     
     //Properties
+    let view1 = UIView()
+    
     
     //location manager
     lazy var locationManager: CLLocationManager = {
@@ -39,7 +41,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var mapViewInformationSpace: UIImageView!
     
+    @IBOutlet weak var settingsOutlet: UIView!
     @IBOutlet weak var foodProfilePicture: UIImageView!
+    @IBOutlet weak var dismissSettingsOutlet: UIButton!
     //MARK: - Actions
     
     @IBAction func logOut(_ sender: Any) {
@@ -49,6 +53,29 @@ class ViewController: UIViewController {
 
     func quickHelper() {
         print("Location: \(locationManager.location!)")
+    }
+    @IBAction func showSettings(_ sender: Any) {
+        let screenWidth = 375.0
+        let screenHeight = 687.0
+        settingsOutlet.isHidden = false
+        UIView.animate(withDuration: 0.5) {
+            self.settingsOutlet.frame = CGRect(x: screenWidth * 0.34, y: 0, width: screenWidth * (0.67), height: screenHeight)
+            self.settingsOutlet.alpha = 1
+            self.dismissSettingsOutlet.isEnabled = true
+            self.dismissSettingsOutlet.isHidden = false
+            self.dismissSettingsOutlet.alpha = 0.5
+        }
+    }
+    @IBAction func dismissSettings(_ sender: Any) {
+        UIView.animate(withDuration: 0.5) {
+            let screenWidth = 375.0
+            let screenHeight = 687.0
+            self.settingsOutlet.frame = CGRect(x: screenWidth, y: 0, width: screenWidth * (0.67), height: screenHeight)
+            self.settingsOutlet.alpha = 0
+            self.dismissSettingsOutlet.alpha = 0
+            
+        }
+        self.dismissSettingsOutlet.isEnabled = false
     }
     
     //MARK: - Application
@@ -71,6 +98,16 @@ class ViewController: UIViewController {
         mapViewInformationSpace.layer.cornerRadius = 15
         foodProfilePicture.clipsToBounds = true
         foodProfilePicture.layer.cornerRadius = 15
+        
+        //Handle Settings View
+        let screenWidth = 375.0
+        let screenHeight = 647.0
+        settingsOutlet.isHidden = true
+        settingsOutlet.frame = CGRect(x: screenWidth, y: 20, width: screenWidth * (0.66), height: screenHeight - 20)
+        dismissSettingsOutlet.alpha = 0
+        dismissSettingsOutlet.isEnabled = false
+        dismissSettingsOutlet.isHidden = true
+        
 
     }
     
