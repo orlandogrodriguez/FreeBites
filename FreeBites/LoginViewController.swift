@@ -16,35 +16,65 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     // MARK: - UI Element Position Variables
     //Screen Variables
     var screen = UIView()
-    var width:Int = 375
-    var height:Int = 687
-    var cWidth:Int = 375 / 2
-    var cHeight:Int = 687 / 2
+    var width:Double = 375
+    var height:Double = 687
+    var cWidth:Double = 375 / 2
+    var cHeight:Double = 687 / 2
+    var enabled:Bool = true
+    var disabled:Bool = false
 
     
     //Eater Button Variables
     var eaterButton_xpos:Int = 0
     var eaterButton_ypos:Int = 0
+    var eaterButton_width:Double = 0
+    var eaterButton_height:Double = 0
     
     //Provider Button Variables
     var providerButton_xpos:Int = 0
     var providerButton_ypos:Int = 0
+    var providerButton_width:Double = 0
+    var providerButton_height:Double = 0
+    
+    //Eater/Provider Rounded Rectangle
+    var eaterProviderIndicator_xpos:Int = 0
+    var eaterProviderIndicator_ypos:Int = 0
+    var eaterProviderIndicator_width:Double = 0
+    var eaterProviderIndicator_height:Double = 0
     
     //SignInSignUpToggle Variables
     var signInSignUpToggle_xpos:Int = 0
     var signInSignUpToggle_ypos:Int = 0
+    var signInSignUpToggle_width:Double = 0
+    var signInSignUpToggle_height:Double = 0
+    var signInSignUpToggle_alpha:Double = 0
     
     //Name Field Variables
     var nameField_xpos:Int = 0
     var nameField_ypos:Int = 0
+    var nameField_width:Double = 0
+    var nameField_height:Double = 0
+    var nameField_alpha:Double = 0
     
     //Email Field Variables
     var emailField_xpos:Int = 0
     var emailField_ypos:Int = 0
+    var emailField_width:Double = 0
+    var emailField_height:Double = 0
+    var emailField_alpha:Double = 0
     
     //Password Field Variables
     var passwordField_xpos:Int = 0
     var passwordField_ypos:Int = 0
+    var passwordField_width:Double = 0
+    var passwordField_height:Double = 0
+    var passwordField_alpha:Double = 0
+    
+    //Proceed Button
+    var proceedButton_xpos:Int = 0
+    var proceedButton_ypos:Int = 0
+    var proceedButton_width:Double = 0
+    var proceedButton_height:Double = 0
     
     var locationManager: CLLocationManager!
     
@@ -60,13 +90,15 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     
     @IBAction func eaterMode(_ sender: AnyObject) {
         setMode(0)
+        handleUIPositions(phase: 0)
     
         //eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Selected"), for: .normal)
         //eaterModeOutlet.layer.cornerRadius = eaterModeOutlet.frame.height / 2
         //providerModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
         
         //Update UI
-        updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
+        //updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
+        
     }
    
     @IBAction func providerMode(_ sender: AnyObject) {
@@ -77,7 +109,8 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         //eaterModeOutlet.setBackgroundImage(#imageLiteral(resourceName: "EaterProviderButton_Unselected"), for: .normal)
         
         //Update UI
-        updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
+        //updateEaterProviderSelectorPosition(newX: sender.frame.minX, newY: sender.frame.minY)
+        
     }
     
     @IBAction func proceedAction(_ sender: Any) {
@@ -121,6 +154,7 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         super.viewDidLoad()
         setDefaultLoginPageParameters()
         drawUIElements()
+        handleUIPositions(phase: 0)
         locationManager = CLLocationManager()
         locationManager?.requestWhenInUseAuthorization()
         
@@ -167,19 +201,13 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     // the view controller when toggling between eater and provider
     // mode
     */
-    func setMode(_ mode:Int) -> () {
-        _ = mode == 1 ? enableAllFields() : disableAllFields()
-        nameField.alpha = CGFloat(mode)
-        emailField.alpha = CGFloat(mode)
-        passwordField.alpha = CGFloat(mode)
-        signInSignUpToggleOutlet.alpha = CGFloat(mode)
-        
+    func setMode(_ mode:Int) {
         globalMode[0] = mode
     }
-    func setDefaultLoginPageParameters() -> () {
+    func setDefaultLoginPageParameters() {
         setMode(0)
     }
-    func proceedAsEater() -> () {
+    func proceedAsEater() {
             performSegue(withIdentifier: "proceedSegue", sender: self)
     }
     func proceedAsProvider(_ mode:Int) -> () {
@@ -209,14 +237,13 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         switch signInSignUpToggleOutlet.selectedSegmentIndex {
         case 0:
             print("Sign In Mode");
-            nameField.isEnabled = false
-            nameField.alpha = 0
             globalMode[1] = 0
+            handleUIPositions(phase: 1)
         case 1:
             print("Sign Up Mode");
-            nameField.isEnabled = true
-            nameField.alpha = 1
+
             globalMode[1] = 1
+            handleUIPositions(phase: 2)
         default:
             break;
         }
@@ -323,19 +350,19 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     // MARK: - UI Helpers
     func drawUIElements() {
         //Draw lines at the bottom of the text fields
-        var width = screen.frame.width
-        var height = screen.frame.height
-        var cWidth = width / 2
-        var cHeight = height / 2
+        let width = screen.frame.width
+        let height = screen.frame.height
+        let cWidth = width / 2
+        let cHeight = height / 2
         drawLinesUnderTextFields()
         
         //Draw Eater/Provider Selector rounded rectangle
         //First set up the rounded rect for the first time and add corner radius.
-        updateEaterProviderSelectorPosition(newX: eaterModeOutlet.frame.minX, newY: eaterModeOutlet.frame.minY)
+        //updateEaterProviderSelectorPosition(newX: eaterModeOutlet.frame.minX, newY: eaterModeOutlet.frame.minY)
         eaterProviderSelector.layer.cornerRadius = eaterProviderSelector.frame.height * 0.5
         //SignInSignUpToggle
         signInSignUpToggleOutlet.layer.cornerRadius = signInSignUpToggleOutlet.frame.height * 0.5
-        signInSignUpToggleOutlet.isEnabled = false
+        //signInSignUpToggleOutlet.isEnabled = false
         proceedOutlet.layer.cornerRadius = proceedOutlet.frame.height * 0.5
     }
     func drawLinesUnderTextFields() {
@@ -365,11 +392,13 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         emailField.layer.masksToBounds = true
         passwordField.layer.masksToBounds = true
     }
+    /*
     func updateEaterProviderSelectorPosition(newX: CGFloat, newY: CGFloat) {
         UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
             self.eaterProviderSelector.layer.frame = CGRect(x: newX, y: newY, width: self.eaterModeOutlet.frame.width, height: self.eaterModeOutlet.frame.height)
         }, completion: nil)
     }
+    */
     func disableAllFields() {
         nameField.isEnabled = false
         emailField.isEnabled = false
@@ -383,19 +412,134 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         signInSignUpToggleOutlet.isEnabled = true
     }
     func handleUIPositions(phase: Int) {
+        //Helpers
+        let gap = 10.0
+        let element = 44.0
         
+        //Eater Button Default Values
+        eaterButton_width = width * 0.4
+        eaterButton_height = 44
+        eaterButton_xpos = 40
+        
+        providerButton_width = eaterButton_width
+        providerButton_height = 44
+        providerButton_xpos = Int(width - 40 - eaterButton_width)
+        
+        eaterProviderIndicator_width = eaterButton_width
+        eaterProviderIndicator_height = eaterButton_height
+        
+        signInSignUpToggle_xpos = 40
+        signInSignUpToggle_height = 20
+        signInSignUpToggle_width = width - 80
+        signInSignUpToggle_height = 30
+        signInSignUpToggle_alpha = 0
+        
+        nameField_xpos = 40
+        nameField_width = width - 80
+        nameField_height = 44
+        
+        emailField_xpos = 40
+        emailField_width = width - 80
+        emailField_height = 44
+        
+        passwordField_xpos = 40
+        passwordField_width = width - 80
+        passwordField_height = 44
+        
+        proceedButton_xpos = 40
+        proceedButton_width = width - 80
+        proceedButton_height = 44
         
         switch phase {
         case 0:
-            print("phase 1");//update positions
-            
+            eaterButton_ypos = Int(cHeight - gap - eaterButton_height)
+            providerButton_ypos = eaterButton_ypos
+            proceedButton_ypos = Int(cHeight + gap)
+            eaterProviderIndicator_ypos = eaterButton_ypos
+            eaterProviderIndicator_xpos = eaterButton_xpos
+            signInSignUpToggle_ypos = Int(cHeight - (0.5 * element))
+            nameField_ypos = Int(cHeight - (0.5 * element))
+            emailField_ypos = Int(cHeight - (0.5 * element))
+            passwordField_ypos = Int(cHeight - (0.5 * element))
+            self.signInSignUpToggleOutlet.isEnabled = false
+            self.nameField.isEnabled = false
+            self.emailField.isEnabled = false
+            self.passwordField.isEnabled = false
+            self.signInSignUpToggleOutlet.isHidden = true
+            self.nameField.isHidden = true
+            self.emailField.isHidden = true
+            self.passwordField.isHidden = true
+            nameField_alpha = 0
+            emailField_alpha = 0
+            passwordField_alpha = 0
+            signInSignUpToggle_alpha = 0
+            print("phase \(phase)")
+        case 1:
+            eaterButton_ypos = Int(cHeight - (2.5 * element) - (2 * gap))
+            providerButton_ypos = Int(cHeight - (2.5 * element) - (2 * gap))
+            signInSignUpToggle_ypos = Int(cHeight - (1.5 * element))
+            emailField_ypos = Int(cHeight - (0.5 * element))
+            passwordField_ypos = Int(cHeight + (0.5 * element) + gap)
+            proceedButton_ypos = Int(cHeight + (1.5 * element) + (3.0 * gap))
+            eaterProviderIndicator_xpos = providerButton_xpos
+            eaterProviderIndicator_ypos = providerButton_ypos
+            nameField_alpha = 0
+            emailField_alpha = 1
+            passwordField_alpha = 1
+            signInSignUpToggle_alpha = 1
+            self.signInSignUpToggleOutlet.isEnabled = true
+            self.nameField.isEnabled = false
+            self.emailField.isEnabled = true
+            self.passwordField.isEnabled = true
+            self.signInSignUpToggleOutlet.isHidden = false
+            self.nameField.isHidden = true
+            self.emailField.isHidden = false
+            self.passwordField.isHidden = false
+            print("phase \(phase)")
         case 2:
-            print("phase 2");//update positions
-        case 3:
-            print("phase 3");//update positions
+            eaterButton_ypos = Int(cHeight - (3.0 * element) - (3.0 * gap))
+            providerButton_ypos = Int(cHeight - (3.0 * element) - (3.0 * gap))
+            signInSignUpToggle_ypos = Int(cHeight - (2.0 * element) - (1.5 * gap))
+            nameField_ypos = Int(cHeight - (1.0 * element) - (1.5 * gap))
+            emailField_ypos = Int(cHeight - (0.0 * element) - (0.5 * gap))
+            passwordField_ypos = Int(cHeight + (1.0 * element) + (0.5 * gap))
+            proceedButton_ypos = Int(cHeight + (2.0 * element) + (2.5 * gap))
+            eaterProviderIndicator_xpos = providerButton_xpos
+            eaterProviderIndicator_ypos = eaterButton_ypos
+            nameField_alpha = 1
+            emailField_alpha = 1
+            passwordField_alpha = 1
+            signInSignUpToggle_alpha = 1
+            self.signInSignUpToggleOutlet.isEnabled = true
+            self.nameField.isEnabled = true
+            self.emailField.isEnabled = true
+            self.passwordField.isEnabled = true
+            self.signInSignUpToggleOutlet.isHidden = false
+            self.nameField.isHidden = false
+            self.emailField.isHidden = false
+            self.passwordField.isHidden = false
+            print("phase \(phase)")
         default:
             break;
         }
+        updateUIPositions()
+    }
+    func updateUIPositions() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseOut, animations: {
+            //Update Eater/Provider Selector
+            self.eaterProviderSelector.frame = CGRect(x: Double(self.eaterProviderIndicator_xpos), y: Double(self.eaterProviderIndicator_ypos), width: self.eaterProviderIndicator_width, height: self.eaterProviderIndicator_height)
+            self.eaterModeOutlet.frame = CGRect(x: Double(self.eaterButton_xpos), y: Double(self.eaterButton_ypos), width: self.eaterButton_width, height: self.eaterButton_height)
+            self.providerModeOutlet.frame = CGRect(x: Double(self.providerButton_xpos), y: Double(self.providerButton_ypos), width: self.providerButton_width, height: self.providerButton_height)
+            self.signInSignUpToggleOutlet.frame = CGRect(x: Double(self.signInSignUpToggle_xpos), y: Double(self.signInSignUpToggle_ypos), width: self.signInSignUpToggle_width, height: self.signInSignUpToggle_height)
+            self.nameField.frame = CGRect(x: Double(self.nameField_xpos), y: Double(self.nameField_ypos), width: self.nameField_width, height: self.nameField_height)
+            self.emailField.frame = CGRect(x: Double(self.emailField_xpos), y: Double(self.emailField_ypos), width: self.emailField_width, height: self.emailField_height)
+            self.passwordField.frame = CGRect(x: Double(self.passwordField_xpos), y: Double(self.passwordField_ypos), width: self.passwordField_width, height: self.passwordField_height)
+            self.proceedOutlet.frame = CGRect(x: Double(self.proceedButton_xpos), y: Double(self.proceedButton_ypos), width: self.proceedButton_width, height: self.proceedButton_height)
+            self.nameField.alpha = CGFloat(self.nameField_alpha)
+            self.emailField.alpha = CGFloat(self.emailField_alpha)
+            self.passwordField.alpha = CGFloat(self.passwordField_alpha)
+            self.signInSignUpToggleOutlet.alpha = CGFloat(self.signInSignUpToggle_alpha)
+        })
     }
 
     /*
@@ -408,8 +552,7 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
     }
     */
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool
-    {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Try to find next responder
         if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
@@ -420,6 +563,7 @@ class LoginViewController: UIViewController, CLLocationManagerDelegate, UITextFi
         // Do not add a line break
         return false
     }
+    
 
 }
 
