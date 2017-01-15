@@ -13,7 +13,7 @@ import Firebase
 import MapKit
 import QuartzCore
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, MKMapViewDelegate {
 
     //Database
     var ref = FIRDatabase.database().reference()
@@ -86,6 +86,7 @@ class ViewController: UIViewController {
         checkForCurrentUser()
         checkEmailVerification()
         createRandomFood()
+        fetchFoodData(foodID: "000000000000001")
         
         _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
         
@@ -185,27 +186,46 @@ class ViewController: UIViewController {
     
     //This is only a temporary function. Get rid of this later.
     func createRandomFood() {
-        //33.7773° N, 84.3962° W
-        let klausLat = 33.7748
-        let klausLon = -84.3964
-        let foodName = "Pizza"
-        self.ref.child("food").child("000001").setValue([
+
+        let newFood = "000000000000001"
+        addFoodToDatabase(foodID: newFood, foodName: "Pizza", lat: 33.7748, lon: -84.3964)
+    }
+    
+    func addFoodToDatabase(foodID:String, foodName:String, lat:Double, lon:Double) {
+        self.ref.child("food").child(foodID).setValue([
             "name"  : foodName,
-            "lat"   : klausLat,
-            "lon"   : klausLon])
-        let foodAnnotation = MKPointAnnotation()
-        
-        
-        var wantedFood = "000001"
-        FIRDatabase.database().reference().child("food").child(wantedFood).observeSingleEvent(of: .value, with: { (snapshot) in
+            "lat"   : lat,
+            "lon"   : lon])
+    }
+    
+    func fetchFoodData(foodID: String) {
+        FIRDatabase.database().reference().child("food").child(foodID).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             let obtainedLat = value?.value(forKey: "lat") as? Double ?? 0.0
             let obtainedLon = value?.value(forKey: "lon") as? Double ?? 0.0
+            let obtainedName = value?.value(forKey: "name") as? String ?? ""
+            let foodAnnotation = MKPointAnnotation()
+            foodAnnotation.title = obtainedName
             foodAnnotation.coordinate = CLLocationCoordinate2D(latitude: obtainedLat, longitude: obtainedLon)
             self.map.addAnnotation(foodAnnotation)
         })
+    }
+    
+    func setFoodAnnotationInfo(foodAnnotation: MKPointAnnotation, title:String, subtitle:String) {
+        foodAnnotation.title = title
+        foodAnnotation.subtitle = subtitle
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let annotationTitle = view.annotation?.title {
+            print("User tapped on annotation with title: \(annotationTitle!)")
+        }
+        displayFoodInformation(selectedAnnotation: view)
         
-        
+    }
+    
+    func displayFoodInformation(selectedAnnotation: MKAnnotationView) {
+        print("Display food information")
     }
 
     override func didReceiveMemoryWarning() {
@@ -217,6 +237,7 @@ class ViewController: UIViewController {
 }
 
 // MARK: - CLLocationManagerDelegate
+
 extension ViewController: CLLocationManagerDelegate {
     
     func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {

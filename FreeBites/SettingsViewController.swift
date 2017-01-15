@@ -7,8 +7,12 @@
 //
 
 import UIKit
+import FirebaseDatabase
+import FirebaseAuth
+import Firebase
 
 class SettingsViewController: UIViewController {
+    @IBOutlet weak var currentUserLabel: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()

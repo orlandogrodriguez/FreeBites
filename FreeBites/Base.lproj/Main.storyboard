@@ -76,11 +76,14 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZg-ee-VB4">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" scrollEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsPointsOfInterest="NO" showsScale="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MZg-ee-VB4">
                                 <rect key="frame" x="20" y="84" width="335" height="335"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="MZg-ee-VB4" secondAttribute="height" multiplier="1:1" id="wMJ-bi-d2M"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="4Zt-Qs-0qa"/>
+                                </connections>
                             </mapView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ibk-jw-8yp">
                                 <rect key="frame" x="20" y="429" width="100" height="100"/>
@@ -288,6 +291,9 @@
                             <constraint firstItem="hLn-r7-WTC" firstAttribute="top" secondItem="LhE-Ur-zBO" secondAttribute="bottom" constant="8" id="wFJ-My-rOp"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="currentUserLabel" destination="hLn-r7-WTC" id="nrl-SM-mO8"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3Q-Am-T10" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
