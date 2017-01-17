@@ -86,7 +86,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         checkForCurrentUser()
         checkEmailVerification()
         createRandomFood()
-        fetchFoodData(foodID: "000000000000001")
+        fetchAllActiveFoods()
         
         _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
         
@@ -186,19 +186,17 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     //This is only a temporary function. Get rid of this later.
     func createRandomFood() {
-
-        let newFood = "000000000000001"
-        addFoodToDatabase(foodID: newFood, foodName: "Pizza", lat: 33.7748, lon: -84.3964)
+        addFoodToDatabase(foodName: "Pizza", lat: 33.7748, lon: -84.3964)
     }
     
-    func addFoodToDatabase(foodID:String, foodName:String, lat:Double, lon:Double) {
-        self.ref.child("food").child(foodID).setValue([
+    func addFoodToDatabase(foodName:String, lat:Double, lon:Double) {
+        self.ref.child("food").childByAutoId().setValue([
             "name"  : foodName,
             "lat"   : lat,
             "lon"   : lon])
     }
     
-    func fetchFoodData(foodID: String) {
+    func dropPinForFood(foodID: String) {
         FIRDatabase.database().reference().child("food").child(foodID).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             let obtainedLat = value?.value(forKey: "lat") as? Double ?? 0.0
@@ -206,8 +204,19 @@ class ViewController: UIViewController, MKMapViewDelegate {
             let obtainedName = value?.value(forKey: "name") as? String ?? ""
             let foodAnnotation = MKPointAnnotation()
             foodAnnotation.title = obtainedName
+            foodAnnotation.subtitle = "This is a subtitle"
             foodAnnotation.coordinate = CLLocationCoordinate2D(latitude: obtainedLat, longitude: obtainedLon)
             self.map.addAnnotation(foodAnnotation)
+        })
+    }
+    
+    func fetchAllActiveFoods() {
+        FIRDatabase.database().reference().child("food").observeSingleEvent(of: .value, with: { (snapshot) in
+            let value = snapshot.value as? NSDictionary
+            //Find all the food entries.
+            for ID in value?.allKeys ?? [""] {
+                self.dropPinForFood(foodID: ID as! String)
+            }
         })
     }
     
