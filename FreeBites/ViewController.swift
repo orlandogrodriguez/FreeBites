@@ -18,8 +18,8 @@ class ViewController: UIViewController, MKMapViewDelegate {
 ////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////UI Variables/////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-
-    var UIPhase     = 0
+    
+    var UIPhase            = 0
     
     //Global Variables
     let margin:Double      = 20
@@ -46,7 +46,6 @@ class ViewController: UIViewController, MKMapViewDelegate {
     var xFoodDescriptionView:Double = 0
     var yFoodDescriptionView:Double = 0
     var aFoodDescriptionView:Double = 0
-    
     
     //Food Picture Variables
     var wFoodPicture:Double = 0
@@ -97,6 +96,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     //Properties
     let view1 = UIView()
+    var currentFoods:[Food]
     
     //location manager
     lazy var locationManager: CLLocationManager = {
@@ -165,7 +165,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
         
         checkForCurrentUser()
         checkEmailVerification()
-        createRandomFood()
+        //createRandomFood()
         fetchAllActiveFoods()
         
         _ = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleMapRegion), userInfo: nil, repeats: false)
@@ -269,10 +269,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     
     //This is only a temporary function. Get rid of this later.
-    func createRandomFood() {
-        addFoodToDatabase(foodName: "Pizza", creator: "GT-SHPE", description: "Get free papa john's pizza at our weekly meeting!", lat: 33.7748, lon: -84.3964)
-        addFoodToDatabase(foodName: "Cookies", creator: "iOS Gatech", description: "Free Insomnia cookies at Klaus 1456!", lat: 33.7773, lon: -84.3962)
-    }
+//    func createRandomFood() {
+//        addFoodToDatabase(foodName: "Pizza", creator: "GT-SHPE", description: "Get free papa john's pizza at our weekly meeting!", lat: 33.7748, lon: -84.3964)
+//        addFoodToDatabase(foodName: "Cookies", creator: "iOS Gatech", description: "Free Insomnia cookies at Klaus 1456!", lat: 33.7773, lon: -84.3962)
+//    }
     
     func addFoodToDatabase(foodName:String, creator:String, description:String, lat:Double, lon:Double) {
         self.ref.child("food").childByAutoId().setValue([
@@ -420,19 +420,19 @@ class ViewController: UIViewController, MKMapViewDelegate {
             
             xFoodName = xFoodPicture + wFoodPicture + (submargin / 2)
             yFoodName = yFoodPicture + (submargin / 2)
-            wFoodName = wFoodDescriptionView - wFoodPicture - submargin
+            wFoodName = wFoodDescriptionView - wFoodPicture - margin
             hFoodName = (hFoodDescriptionView - margin) * 0.25
             aFoodName = 0
             
             xProviderName = xFoodPicture + wFoodPicture + (submargin / 2)
             yProviderName = yFoodPicture + (submargin / 2) + hFoodName
-            wProviderName = wFoodDescriptionView - wFoodPicture - submargin
+            wProviderName = wFoodDescriptionView - wFoodPicture - margin
             hProviderName = (hFoodDescriptionView - margin) * 0.15
             aProviderName = 0
             
             xFoodDescription = xFoodPicture + wFoodPicture + (submargin / 2)
             yFoodDescription = yFoodPicture + submargin + hFoodName + hProviderName
-            wFoodDescription = wFoodDescriptionView - wFoodPicture - submargin
+            wFoodDescription = wFoodDescriptionView - wFoodPicture - margin
             hFoodDescription = (hFoodDescriptionView - margin) * 0.6
             aFoodDescription = 0
 
@@ -469,19 +469,19 @@ class ViewController: UIViewController, MKMapViewDelegate {
             
             xFoodName = xFoodPicture + wFoodPicture + (submargin / 2)
             yFoodName = yFoodPicture + (submargin / 2)
-            wFoodName = wFoodDescriptionView - wFoodPicture - submargin
+            wFoodName = wFoodDescriptionView - wFoodPicture - margin
             hFoodName = (hFoodDescriptionView - margin) * 0.25
             aFoodName = 1
             
             xProviderName = xFoodPicture + wFoodPicture + (submargin / 2)
             yProviderName = yFoodPicture + (submargin / 2) + hFoodName
-            wProviderName = wFoodDescriptionView - wFoodPicture - submargin
+            wProviderName = wFoodDescriptionView - wFoodPicture - margin
             hProviderName = (hFoodDescriptionView - margin) * 0.15
             aProviderName = 1
             
             xFoodDescription = xFoodPicture + wFoodPicture + (submargin / 2)
             yFoodDescription = yFoodPicture + submargin + hFoodName + hProviderName
-            wFoodDescription = wFoodDescriptionView - wFoodPicture - submargin
+            wFoodDescription = wFoodDescriptionView - wFoodPicture - margin
             hFoodDescription = (hFoodDescriptionView - submargin) * 0.6
             aFoodDescription = 1
             

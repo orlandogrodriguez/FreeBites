@@ -128,15 +128,8 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="4Zt-Qs-0qa"/>
                                 </connections>
                             </mapView>
-                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vHu-VO-PCe">
-                                <rect key="frame" x="375" y="0.0" width="250" height="667"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <segue destination="5DU-vI-w4S" kind="embed" identifier="settingsAppear" id="ixu-jW-EIf"/>
-                                </connections>
-                            </containerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MgD-mw-gS6">
-                                <rect key="frame" x="363" y="0.0" width="375" height="667"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.30190496575342468" colorSpace="calibratedRGB"/>
                                 <accessibility key="accessibilityConfiguration">
@@ -146,6 +139,13 @@
                                     <action selector="dismissSettings:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nL6-pC-MuU"/>
                                 </connections>
                             </button>
+                            <containerView hidden="YES" opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vHu-VO-PCe">
+                                <rect key="frame" x="375" y="0.0" width="250" height="667"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <segue destination="5DU-vI-w4S" kind="embed" identifier="settingsAppear" id="ixu-jW-EIf"/>
+                                </connections>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
