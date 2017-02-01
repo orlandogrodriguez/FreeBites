@@ -96,7 +96,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     //Properties
     let view1 = UIView()
-    var currentFoods:[Food]
+    //var currentFoods:[Food]
     
     //location manager
     lazy var locationManager: CLLocationManager = {
