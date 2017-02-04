@@ -19,12 +19,12 @@ struct Food {
     var latitude:Double
     var longitude:Double
     
-    init(uid:String) {
-        name = ""
-        description = ""
+    init(uid:String, name:String, description:String, creator:String, latitude:Double, longitude:Double) {
+        self.name = name
+        self.description = description
         self.uid = uid
-        creator = ""
-        latitude = 0.0
-        longitude = 0.0
+        self.creator = creator
+        self.latitude = latitude
+        self.longitude = longitude
     }
 }

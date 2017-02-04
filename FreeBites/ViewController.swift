@@ -20,6 +20,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
 ////////////////////////////////////////////////////////////////////////////////
     
     var UIPhase            = 0
+    var foodAlreadySelected = false
     
     //Global Variables
     let margin:Double      = 20
@@ -96,7 +97,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     //Properties
     let view1 = UIView()
-    //var currentFoods:[Food]
+    var currentFoods = [String: Food]()
     
     //location manager
     lazy var locationManager: CLLocationManager = {
@@ -269,10 +270,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
     
     
     //This is only a temporary function. Get rid of this later.
-//    func createRandomFood() {
-//        addFoodToDatabase(foodName: "Pizza", creator: "GT-SHPE", description: "Get free papa john's pizza at our weekly meeting!", lat: 33.7748, lon: -84.3964)
-//        addFoodToDatabase(foodName: "Cookies", creator: "iOS Gatech", description: "Free Insomnia cookies at Klaus 1456!", lat: 33.7773, lon: -84.3962)
-//    }
+    func createRandomFood() {
+        addFoodToDatabase(foodName: "Pizza", creator: "GT-SHPE", description: "Get free papa john's pizza at our weekly meeting!", lat: 33.7748, lon: -84.3964)
+        addFoodToDatabase(foodName: "Cookies", creator: "iOS Gatech", description: "Free Insomnia cookies at Klaus 1456!", lat: 33.7773, lon: -84.3962)
+    }
     
     func addFoodToDatabase(foodName:String, creator:String, description:String, lat:Double, lon:Double) {
         self.ref.child("food").childByAutoId().setValue([
@@ -289,12 +290,18 @@ class ViewController: UIViewController, MKMapViewDelegate {
             let obtainedLat = value?.value(forKey: "lat") as? Double ?? 0.0
             let obtainedLon = value?.value(forKey: "lon") as? Double ?? 0.0
             let obtainedName = value?.value(forKey: "name") as? String ?? ""
+            let obtainedDescription = value?.value(forKey: "description") as? String ?? ""
+            let obtainedCreator = value?.value(forKey: "creator") as? String ?? ""
             let foodAnnotation = MKPointAnnotation()
             foodAnnotation.title = obtainedName
             foodAnnotation.subtitle = foodID
-            
             foodAnnotation.coordinate = CLLocationCoordinate2D(latitude: obtainedLat, longitude: obtainedLon)
             self.map.addAnnotation(foodAnnotation)
+            
+            var food:Food = Food(uid: foodID, name: obtainedName, description: obtainedDescription, creator: obtainedCreator, latitude: obtainedLat, longitude: obtainedLon)
+            self.currentFoods[food.uid] = food
+            print("Foods: \(self.currentFoods)")
+            
         })
     }
     
@@ -306,6 +313,7 @@ class ViewController: UIViewController, MKMapViewDelegate {
                 self.dropPinForFood(foodID: ID as! String)
             }
         })
+        
     }
     
     func setFoodAnnotationInfo(foodAnnotation: MKPointAnnotation, title:String, subtitle:String) {
@@ -314,6 +322,10 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     func fetchFoodInfoForSinglePin(foodID:String) {
+        welcomeLabel.text = currentFoods[foodID]?.name
+        providerNameOutlet.text = currentFoods[foodID]?.creator
+        foodDescriptionOutlet.text = currentFoods[foodID]?.description
+        /*
         FIRDatabase.database().reference().child("food").child(foodID).observeSingleEvent(of: .value, with: { (snapshot) in
             let value = snapshot.value as? NSDictionary
             //Find all the food entries.
@@ -325,12 +337,16 @@ class ViewController: UIViewController, MKMapViewDelegate {
             self.foodDescriptionOutlet.text = foodDescription
             
         })
+        */
     }
     
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        if UIPhase != 1 {
+        if UIPhase != 1 && !foodAlreadySelected {
             UIPhase = 1
             UI_UpdatePositions(phase: UIPhase)
+            foodAlreadySelected = true
+
+            print("This ran")
         }
         displayFoodInformation(selectedAnnotation: view)
         view.setSelected(true, animated: true)
@@ -338,9 +354,11 @@ class ViewController: UIViewController, MKMapViewDelegate {
     }
     
     func mapView(_ mapView: MKMapView, didDeselect view: MKAnnotationView) {
-        if UIPhase != 0 {
+        if UIPhase != 0 && foodAlreadySelected {
             UIPhase = 0
             UI_UpdatePositions(phase: UIPhase)
+            foodAlreadySelected = false
+
         }
         view.setSelected(false, animated: true)
         view.image = UIImage(named: "BiteMark")
